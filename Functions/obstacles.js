@@ -8,37 +8,34 @@ class Obstacle {
     this.type = type;
     this.frameX = 0;
     this.frameY = 0;
-    this.randomise = Math.floor(Math.random() * 30 + 30);
     this.carFrame = 0;
   }
 
   //Drawing Obstacles in canvas 2
   drawObstacle() {
     if (this.type === "turtle") {
-      if (frame % this.randomise === 0) {
-        if (this.frameX >= 1) this.frameX = 0;
-        else this.frameX++;
-      }
       ctx1.drawImage(
         turtle,
-        this.frameX * 70,
-        this.frameY * 70,
-        70,
-        70,
+        0,
+        0,
+        100,
+        50,
         this.x,
         this.y,
-        this.height,
-        this.width
+
+        this.width,
+        this.height
       );
     } else if (this.type === "log") {
       ctx1.drawImage(log, this.x, this.y, this.width, this.height);
     } else {
       // ctx1.fillRect(this.x, this.y, this.width, this.height);
+      // console.log(this.height - 5);
       ctx1.drawImage(
         car,
-        this.carFrame * 160,
-        79,
-        grid * 2.3,
+        this.carFrame * 50,
+        0,
+        grid,
         grid,
         this.x,
         this.y,
@@ -73,41 +70,112 @@ function createObstacle() {
     let x = i * 350;
     //creating new object of class
     carsArray.push(
-      new Obstacle(x, canvas.height - grid * 2 - 30, grid * 2, grid, 2, "car")
+      new Obstacle(x, canvas.height - grid * 2 - 49, grid, grid - 5, 2, "car")
     );
   }
   //lane 2  Obstacles (here we pass grid *3  because we are moving to next lane)
+  for (let i = 0; i < 3; i++) {
+    let x = i * 275;
+    //creating new object of class
+    carsArray.push(
+      new Obstacle(x, canvas.height - grid * 3 - 49, grid, grid - 5, -2, "car")
+    );
+  }
+
+  // //Lane 3
+  for (let i = 0; i < 2; i++) {
+    let x = i * 400;
+    //creating new object of class
+    carsArray.push(
+      new Obstacle(x, canvas.height - grid * 4 - 49, grid, grid - 5, 2, "car")
+    );
+  }
   for (let i = 0; i < 2; i++) {
     let x = i * 350;
     //creating new object of class
     carsArray.push(
-      new Obstacle(x, canvas.height - grid * 3 - 30, grid * 2, grid, -2, "car")
+      new Obstacle(x, canvas.height - grid * 5 - 49, grid, grid - 5, -2, "car")
     );
   }
-
-  //Lane 3
-  for (let i = 0; i < 2; i++) {
-    let x = i * 400;
+  for (let i = 0; i < 3; i++) {
+    let x = i * 300;
     //creating new object of class
     carsArray.push(
-      new Obstacle(x, canvas.height - grid * 4 - 30, grid * 2, grid, 2, "car")
+      new Obstacle(x, canvas.height - grid * 6 - 49, grid, grid - 5, 2, "car")
     );
   }
 
-  //lane 4
+  //River Obstacles
+  for (let i = 0; i < 4; i++) {
+    let x = i * 250;
+    console.log(" Obstacle starts from", canvas.height - grid * 8 - 49);
+    logsArray.push(
+      new Obstacle(
+        x,
+        canvas.height - grid * 8 - 49,
+        grid * 2,
+        grid - 5,
+        2,
+        "log"
+      )
+    );
+  }
+  for (let i = 0; i < 3; i++) {
+    let x = i * 200;
+
+    logsArray.push(
+      new Obstacle(
+        x,
+        canvas.height - grid * 9 - 49,
+        grid * 2,
+        grid - 5,
+        -0.7,
+        "turtle"
+      )
+    );
+  }
   for (let i = 0; i < 2; i++) {
     let x = i * 400;
     //creating new object of class
     logsArray.push(
-      new Obstacle(x, canvas.height - grid * 5 - 98, grid * 2, grid, -2, "log")
+      new Obstacle(
+        x,
+        canvas.height - grid * 10 - 49,
+        grid * 2,
+        grid - 5,
+        2.5,
+        "log"
+      )
     );
   }
-  //Lane 5
-  for (let i = 0; i < 3; i++) {
-    let x = i * 200;
+
+  for (let i = 0; i < 2; i++) {
+    let x = i * 300;
     //creating new object of class
     logsArray.push(
-      new Obstacle(x, canvas.height - grid * 6 - 98, grid, grid, 0.7, "turtle")
+      new Obstacle(
+        x,
+        canvas.height - grid * 11 - 49,
+        grid * 2,
+        grid - 5,
+        -1,
+        "turtle"
+      )
+    );
+  }
+
+  for (let i = 0; i < 2; i++) {
+    let x = i * 450;
+    //creating new object of class
+    logsArray.push(
+      new Obstacle(
+        x,
+        canvas.height - grid * 12 - 49,
+        grid * 2,
+        grid - 5,
+        2,
+        "log"
+      )
     );
   }
 }
@@ -142,7 +210,7 @@ function handleObstacle() {
 
   //Checking Collison in River
 
-  if (frogger.y < 200 && frogger.y > 50) {
+  if (frogger.y < 351 && frogger.y > 100) {
     safeState = false;
     for (i = 0; i < logsArray.length; i++) {
       if (detectCollision(frogger, logsArray[i])) {
